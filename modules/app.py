@@ -42,7 +42,6 @@ def redir():
 
 @app.before_request
 def beforeRequest():
-
     if(app.config["ENV"] == "production"):
         if not request.url.startswith('https'):
             return redirect(request.url.replace('http', 'https', 1))
