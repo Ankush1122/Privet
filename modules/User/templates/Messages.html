@@ -248,7 +248,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            var socket = io.connect("http://localhost:5000")
+            var socket = io.connect("https://privetiitj.herokuapp.com")
             socket.on('connect', function () {
                 mes = { "sender": document.querySelector('meta[name="selfId"]').content, "content": "User Connected!", "reciever": document.querySelector('meta[name="chatId"]').content }
                 socket.send(mes)
