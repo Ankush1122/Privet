@@ -1,13 +1,16 @@
 from crypt import methods
+from socket import socket
 import MainRepo
 from flask import Flask, render_template, redirect, session, send_file, request
 from flask_mail import Mail, Message
 from flask.helpers import url_for
+from flask_socketio import SocketIO, send
+import os, json
 
-import os
+from User.UserServices import UserServices
 
 app = Flask(__name__)
-
+socketio = SocketIO(app , cors_allowed_origins = "*")
 
 if(os.environ.get('ENV') == "Production"):
     app.config.from_object("config.ProductionConfig")
@@ -46,7 +49,15 @@ def beforeRequest():
         if not request.url.startswith('https'):
             return redirect(request.url.replace('http', 'https', 1))
 
+@socketio.on('message')
+def handle_message(message):
+    if(message['content'] != "User Connected!"):      
+        services = UserServices(db)
+        services.addMessage(message)
+        send(json.dumps(message), broadcast = True)
+    else:
+        print("\n",message["sender"] , message["content"],"\n")
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    socketio.run(app, host='0.0.0.0', port=port)

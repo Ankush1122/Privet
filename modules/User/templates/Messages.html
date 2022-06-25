@@ -4,7 +4,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="chatId" content="">
+    <meta name="selfId" content="{{selfUser.userid}}">
+
+
+
     <title> PRIVET </title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js"></script>
 
     <link rel="stylesheet" href="{{ url_for('user.static', filename='assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('user.static', filename='assets/css/fontawsom-all.min.css') }}">
@@ -101,138 +108,85 @@
                         </div>
                     </div>
                     <div class="inbox_chat">
-                        <div class="chat_list active_chat">
+                        {% for user in users %}
+                        {% if user.userid != selfUser.userid %}
+                        <div id="{{user.userid+'_Title'}}" class="chat_list" onclick="openchat('{{user.userid}}')"
+                            style="cursor: pointer;">
                             <div class="chat_people">
-                                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png"
-                                        alt="sunil"> </div>
+                                <div class="chat_img">
+                                    {% if user.avatar == 1 %}
+                                    <img src="{{ url_for('user.static', filename='assets/images/avatar1.png') }}">
+                                    {% elif user.avatar == 2 %}
+                                    <img src="{{ url_for('user.static', filename='assets/images/avatar2.png') }}">
+                                    {% elif user.avatar == 3 %}
+                                    <img src="{{ url_for('user.static', filename='assets/images/avatar3.png') }}">
+                                    {% elif user.avatar == 4 %}
+                                    <img src="{{ url_for('user.static', filename='assets/images/avatar4.png') }}">
+                                    {% elif user.avatar == 5 %}
+                                    <img src="{{ url_for('user.static', filename='assets/images/avatar5.png') }}">
+                                    {% endif %}
+                                </div>
                                 <div class="chat_ib">
-                                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                                    <p>Test, which is a new approach to have all solutions
-                                        astrology under one roof.</p>
+                                    <h5>{{user.name}}
+                                        {% if user.userid in selfUser.messages%}
+                                        <span class="chat_date">{{ selfUser.messages[user.userid][-1]["date"]}}</span>
+                                        <p> {{ selfUser.messages[user.userid][-1]["content"] }}</p>
+                                        {% else %}
+                                        <p>Start a Conversation with {{user.name}}</p>
+                                        {% endif %}
+                                    </h5>
                                 </div>
                             </div>
                         </div>
-                        <div class="chat_list">
-                            <div class="chat_people">
-                                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png"
-                                        alt="sunil"> </div>
-                                <div class="chat_ib">
-                                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                                    <p>Test, which is a new approach to have all solutions
-                                        astrology under one roof.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chat_list">
-                            <div class="chat_people">
-                                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png"
-                                        alt="sunil"> </div>
-                                <div class="chat_ib">
-                                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                                    <p>Test, which is a new approach to have all solutions
-                                        astrology under one roof.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chat_list">
-                            <div class="chat_people">
-                                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png"
-                                        alt="sunil"> </div>
-                                <div class="chat_ib">
-                                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                                    <p>Test, which is a new approach to have all solutions
-                                        astrology under one roof.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chat_list">
-                            <div class="chat_people">
-                                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png"
-                                        alt="sunil"> </div>
-                                <div class="chat_ib">
-                                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                                    <p>Test, which is a new approach to have all solutions
-                                        astrology under one roof.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chat_list">
-                            <div class="chat_people">
-                                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png"
-                                        alt="sunil"> </div>
-                                <div class="chat_ib">
-                                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                                    <p>Test, which is a new approach to have all solutions
-                                        astrology under one roof.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chat_list">
-                            <div class="chat_people">
-                                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png"
-                                        alt="sunil"> </div>
-                                <div class="chat_ib">
-                                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                                    <p>Test, which is a new approach to have all solutions
-                                        astrology under one roof.</p>
-                                </div>
-                            </div>
-                        </div>
+                        {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
-                <div class="mesgs">
-                    <div class="msg_history">
-                        <div class="incoming_msg">
-                            <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png"
-                                    alt="sunil"> </div>
-                            <div class="received_msg">
-                                <div class="received_withd_msg">
-                                    <p>Test which is a new approach to have all
-                                        solutions</p>
-                                    <span class="time_date"> 11:01 AM | June 9</span>
-                                </div>
-                            </div>
-                        </div>
+                <div id="messages_window" class="mesgs">
+                    {% for user in users %}
+                    {% if user.userid != selfUser.userid %}
+                    <div id="{{user.userid}}" class="msg_history" style="display:none">
+                        {% for message in selfUser.messages[user.userid] %}
+                        {% if message["sender"] == selfUser.userid %}
                         <div class="outgoing_msg">
                             <div class="sent_msg">
-                                <p>Test which is a new approach to have all
-                                    solutions</p>
-                                <span class="time_date"> 11:01 AM | June 9</span>
+                                <p>{{message["content"]}}</p>
+                                <span class="time_date"> {{message["time"]}} | {{message["date"]}}</span>
                             </div>
                         </div>
+                        {% else %}
                         <div class="incoming_msg">
-                            <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png"
-                                    alt="sunil"> </div>
+                            <div class="incoming_msg_img">
+
+                                {% if user.avatar == 1 %}
+                                <img src="{{ url_for('user.static', filename='assets/images/avatar1.png') }}">
+                                {% elif user.avatar == 2 %}
+                                <img src="{{ url_for('user.static', filename='assets/images/avatar2.png') }}">
+                                {% elif user.avatar == 3 %}
+                                <img src="{{ url_for('user.static', filename='assets/images/avatar3.png') }}">
+                                {% elif user.avatar == 4 %}
+                                <img src="{{ url_for('user.static', filename='assets/images/avatar4.png') }}">
+                                {% elif user.avatar == 5 %}
+                                <img src="{{ url_for('user.static', filename='assets/images/avatar5.png') }}">
+                                {% endif %}
+
+                            </div>
                             <div class="received_msg">
                                 <div class="received_withd_msg">
-                                    <p>Test, which is a new approach to have</p>
-                                    <span class="time_date"> 11:01 AM | Yesterday</span>
+                                    <p>{{message["content"]}}</p>
+                                    <span class="time_date"> {{message["time"]}} | {{message["date"]}}</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="outgoing_msg">
-                            <div class="sent_msg">
-                                <p>Apollo University, Delhi, India Test</p>
-                                <span class="time_date"> 11:01 AM | Today</span>
-                            </div>
-                        </div>
-                        <div class="incoming_msg">
-                            <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png"
-                                    alt="sunil"> </div>
-                            <div class="received_msg">
-                                <div class="received_withd_msg">
-                                    <p>We work directly with our designers and suppliers,
-                                        and sell direct to you, which means quality, exclusive
-                                        products, at a price anyone can afford.</p>
-                                    <span class="time_date"> 11:01 AM | Today</span>
-                                </div>
-                            </div>
-                        </div>
+                        {% endif %}
+                        {% endfor %}
                     </div>
+                    {% endif %}
+                    {% endfor %}
                     <div class="type_msg">
                         <div class="input_msg_write">
-                            <input type="text" class="write_msg" placeholder="Type a message" />
-                            <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o"
+                            <input id="input_message" type="text" class="write_msg" placeholder="Type a message" />
+                            <button id="sendBtn" class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o"
                                     aria-hidden="true"></i></button>
                         </div>
                     </div>
@@ -291,6 +245,77 @@
 
     <!-- Template Main JS File -->
     <script src="{{ url_for('user.static', filename='assets/js/main.js') }}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var socket = io.connect("http://localhost:5000")
+            socket.on('connect', function () {
+                mes = { "sender": document.querySelector('meta[name="selfId"]').content, "content": "User Connected!", "reciever": document.querySelector('meta[name="chatId"]').content }
+                socket.send(mes)
+            })
+            socket.on('message', function (message) {
+                var message = JSON.parse(message)
+                if (message["reciever"] == document.querySelector('meta[name="selfId"]').content) {
+                    document.getElementById(message["sender"]).innerHTML += '<div class="incoming_msg"><div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png"> </div> <div class="received_msg"> <div class="received_withd_msg"> <p>' + message["content"] + '</p> <span class="time_date"> ' + message["time"] + ' | ' + message["date"] + '</span></div></div></div >'
+                }
+            })
+            $('#sendBtn').on('click', function () {
+                mes = { "sender": document.querySelector('meta[name="selfId"]').content, "content": document.getElementById("input_message").value, "reciever": document.querySelector('meta[name="chatId"]').content, "date": getDate(), "time": getTime() }
+                if (mes["content"] != "" && document.querySelector('meta[name="chatId"]').content != "") {
+                    document.getElementById(document.querySelector('meta[name="chatId"]').content).innerHTML += '<div class="outgoing_msg"> <div class="sent_msg"> <p>' + mes["content"] + '</p> <span class="time_date"> ' + mes["time"] + ' | ' + mes["date"] + '</span></div></div> '
+                    document.getElementById("input_message").value = ""
+                    socket.send(mes)
+                }
+            })
+            function getDate() {
+                const d = new Date();
+                var month = d.getMonth()
+                var day = d.getDate()
+                var date = ""
+                if (month == 0)
+                    date += "January"
+                else if (month == 1)
+                    date += "February"
+                else if (month == 2)
+                    date += "March"
+                else if (month == 3)
+                    date += "April"
+                else if (month == 4)
+                    date += "May"
+                else if (month == 5)
+                    date += "June"
+                else if (month == 6)
+                    date += "July"
+                else if (month == 7)
+                    date += "August"
+                else if (month == 8)
+                    date += "September"
+                else if (month == 9)
+                    date += "October"
+                else if (month == 10)
+                    date += "November"
+                else if (month == 11)
+                    date += "December"
+                date += " " + day
+                return date
+            }
+            function getTime() {
+                const d = new Date()
+                return d.toLocaleTimeString('en-US', { hour12: true })
+            }
+        })
+        function openchat(userid) {
+            var i;
+            x = document.getElementsByClassName("msg_history")
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+                document.getElementById(x[i].id + "_Title").classList.remove('active_chat')
+            }
+            document.getElementById(userid).style.display = "block";
+            document.getElementById(userid + '_Title').classList.add('active_chat')
+            document.querySelector('meta[name="chatId"]').setAttribute("content", userid);
+        }
+    </script>
 
     <style type="text/css">
         .container {

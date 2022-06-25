@@ -70,6 +70,18 @@ class Repo():
             return False
         return True
 
+    def updateUserMessages(self,messages,userid):
+        try:
+            query = """UPDATE "User"
+                    SET "messages" = '{}'
+                    WHERE "userid" = '{}';""".format(json.dumps(messages), userid)
+            self.cur.execute(query)
+            self.conn.commit()
+        except Exception as e:
+            print(e)
+            return False
+        return True
+
     def updateUserPassword(self, password, userid):
         try:
             query = """UPDATE "User"
@@ -128,7 +140,7 @@ class Repo():
             self.cur.execute(query)
             userTable = self.cur.fetchall()
             user = UserModel.User(
-                userTable[0][0], userTable[0][1], userTable[0][2], userTable[0][3], userTable[0][4], userTable[0][5], userTable[0][6], userTable[0][7], userTable[0][8], userTable[0][9], userTable[0][10], userTable[0][11])
+                userTable[0][0], userTable[0][1], userTable[0][2], userTable[0][3], userTable[0][4], userTable[0][5], userTable[0][6], userTable[0][7], userTable[0][8], userTable[0][9], userTable[0][10], json.loads(userTable[0][11]))
         except Exception as e:
             print(e)
             return [False, None]
@@ -145,7 +157,7 @@ class Repo():
         users = []
         for row in userTable:
             user = UserModel.User(
-                row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11])
+                row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], json.loads(row[11]))
             users.append(user)
         return [True, users]
 

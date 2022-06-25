@@ -4,7 +4,7 @@ from flask.helpers import url_for
 from flask_mail import Message
 from datetime import datetime
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired
-
+import random
 
 user = Blueprint("user", __name__, static_folder="static",
                  template_folder="templates")
@@ -148,8 +148,9 @@ def messages():
         if " " in name:
             firstname = name.split()[0]
 
+        users = userService.getAllUsers()
         if (userData[0]):
-            return render_template('Messages.html', firstname=firstname)
+            return render_template('Messages.html', firstname=firstname,users=users,selfUser=userData[1])
         else:
             return redirect(url_for('user.login'))
 
@@ -168,7 +169,7 @@ def signup():
         if(not status[0]):
             return render_template("signup.html", warning=status[1])
         user = UserModel.User(None, form_data.get("name"), form_data.get("email"), form_data.get(
-            "password"), "user", 1, "Add Bio", form_data.get("country"), "Add Occupation", form_data.get("DOB"), 0, {})
+            "password"), "user", random.randint(1,6), "Add Bio", form_data.get("country"), "Add Occupation", form_data.get("DOB"), 0, {})
         status = userService.register(user)
         if(not status[0]):
             return render_template("signup.html", warning=status[1])

@@ -107,3 +107,28 @@ class UserServices:
             return data[1]
         else:
             return 0
+    
+    def getAllUsers(self):
+        data = self.db.getAllUsers()
+        if(data[0]):
+            return data[1]
+        else:
+            return 0
+
+    def addMessage(self,message):
+        data = self.db.getUserById(message["sender"])
+        if(data[0]):
+            if message["reciever"] in data[1].messages:
+                data[1].messages[message["reciever"]].append(message)
+            else:
+                data[1].messages[message["reciever"]] = [message]
+        self.db.updateUserMessages(data[1].messages,data[1].userid)
+
+        data = self.db.getUserById(message["reciever"])
+        if(data[0]):
+            if message["sender"] in data[1].messages:
+                data[1].messages[message["sender"]].append(message)
+            else:
+                data[1].messages[message["sender"]] = [message]
+
+        self.db.updateUserMessages(data[1].messages,data[1].userid)

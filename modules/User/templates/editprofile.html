@@ -100,7 +100,7 @@
 			<nav aria-label="breadcrumb" class="main-breadcrumb">
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="/home" style="color:rgb(0, 203, 236)">Home</a></li>
-					<li class="breadcrumb-item"><a href="javascript:void(0)" style="color:rgb(0, 203, 236)">User</a>
+					<li class="breadcrumb-item"><a href="/user/profile" style="color:rgb(0, 203, 236)">User</a>
 					</li>
 					<li class="breadcrumb-item active" aria-current="page" style="color:rgb(0, 203, 236)">User Profile
 					</li>
@@ -115,7 +115,19 @@
 							<div class="d-flex flex-column align-items-center text-center">
 								{% if avatar == 1 %}
 								<img src="{{ url_for('user.static', filename='assets/images/avatar1.png') }}"
+									class="rounded-circle" width="150">
+								{% elif avatar == 2 %}
+								<img src="{{ url_for('user.static', filename='assets/images/avatar2.png') }}"
 									alt="Admin" class="rounded-circle" width="150">
+								{% elif avatar == 3 %}
+								<img src="{{ url_for('user.static', filename='assets/images/avatar3.png') }}"
+									alt="Admin" class="rounded-circle" width="150">
+								{% elif avatar == 4 %}
+								<img src="{{ url_for('user.static', filename='assets/images/avatar4.png') }}"
+									alt="Admin" class="rounded-circle" width="150">
+								{% elif avatar == 5 %}
+								<img src="{{ url_for('user.static', filename='assets/images/avatar5.png') }}"
+									width="150">
 								{% endif %}
 								<div class="mt-3">
 									<h4>{{name}}</h4>
