@@ -1,1 +1,1 @@
-web: gunicorn --chdir modules app:app
+web: gunicorn --chdir modules --worker-class eventlet -w 1 wsgi:app

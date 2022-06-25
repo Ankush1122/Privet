@@ -42,6 +42,13 @@ def logo():
 def redir():
     return redirect(url_for('home'))
 
+
+@app.before_request
+def beforeRequest():
+    if(app.config["ENV"] == "production"):
+        if not request.url.startswith('https'):
+            return redirect(request.url.replace('http', 'https', 1))
+
 @socketio.on('message')
 def handle_message(message):
     print("message Recieved")
