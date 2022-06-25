@@ -248,7 +248,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            var socket = io("wss://privetiitj.herokuapp.com/socket.io/?EIO=4&transport=websocket")
+            var socket = io.connect("172.31.9.206:5000")
             console.log("connecting")
             console.log(socket)
             socket.on('connect', function () {
