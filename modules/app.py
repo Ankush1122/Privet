@@ -53,6 +53,7 @@ def beforeRequest():
 def handle_message(message):
     if(message['content'] != "User Connected!"):      
         services = UserServices(db)
+        print(message)
         services.addMessage(message)
         send(json.dumps(message), broadcast = True)
     else:
