@@ -1,1 +1,1 @@
-web: gunicorn --worker-class socketio.sgunicorn.GeventSocketIOWorker --log-file=- --chdir modules app:app
+web: gunicorn --worker-class eventlet -w 1 --chdir modules app:app
