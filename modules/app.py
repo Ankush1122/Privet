@@ -51,6 +51,7 @@ def beforeRequest():
 
 @socketio.on('message')
 def handle_message(message):
+    print("message Recieved")
     if(message['content'] != "User Connected!"):      
         services = UserServices(db)
         print(message)
