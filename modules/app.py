@@ -1,8 +1,6 @@
-from crypt import methods
-from socket import socket
 import MainRepo
 from flask import Flask, render_template, redirect, session, send_file, request
-from flask_mail import Mail, Message
+from flask_mail import Mail
 from flask.helpers import url_for
 from flask_socketio import SocketIO, send
 import os, json
